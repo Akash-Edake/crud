@@ -1,5 +1,5 @@
 const Records = require("../model/fiveThousandRecords");
-
+const axios = require("axios");
 exports.findAll = async (req, res) => {
   try {
     const allRecords = await Records.find({})
@@ -16,8 +16,10 @@ exports.pagination = async (req, res) => {
   const { body } = req;
   const page = body.pageNo - 1;
   const perPage = body.perPage;
-  const sortBy= {[body.sortBy]:body.order=='asc'?1:-1} || { title: 1 }
-  
+  const sortBy = { [body.sortBy]: body.order == "asc" ? 1 : -1 } || {
+    title: 1,
+  };
+
   try {
     const totalRecords = await Records.find().countDocuments();
     const records = await Records.find({})
@@ -58,7 +60,18 @@ exports.updateRecords = async (req, res) => {
       new: true,
       upsert: true,
     });
-    res.status(200).send(updeted);
+    res.status(201).send(updeted);
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};
+
+exports.weather = async (req, res) => {
+  const { body } = req;
+  const url = `http://api.weatherstack.com/current?access_key=07540ffc77eb9695997ccfeb0a35662c&query=${body.city}`;
+  try {
+    const currentWeather = await axios.get(url);
+    res.send(currentWeather.data);
   } catch (e) {
     res.status(400).send(e);
   }
