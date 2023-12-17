@@ -76,3 +76,16 @@ exports.weather = async (req, res) => {
     res.status(400).send(e);
   }
 };
+
+exports.search = async (req, res) => {
+  const { body } = req;
+  const { text, searchBy } = body;
+  try {
+    const filterData = await Records.find({
+      [searchBy]: { $regex: text, $options: "i" },
+    });
+    res.send({total:filterData.length,filterData});
+  } catch (e) {
+    res.status(400).send(e);
+  }
+};

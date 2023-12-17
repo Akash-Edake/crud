@@ -7,13 +7,16 @@ const {
   updateRecords,
   pagination,
   weather,
+  search,
 } = require("../controllers/records");
 
 router.get("/records", findAll);
-router.post("/pagination", pagination);
 router.post("/add", add);
 router.post("/delete", deleteReconds);
 router.put("/update", updateRecords);
+
+router.post("/pagination", pagination);
+router.post("/search", search);
 
 router.post("/weather", weather);
 
