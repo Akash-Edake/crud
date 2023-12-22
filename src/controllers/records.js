@@ -5,7 +5,6 @@ exports.findAll = async (req, res) => {
     const allRecords = await Records.find({})
       .skip(0)
       .limit(100)
-      .sort({ title: 1 });
     res.status(200).send(allRecords);
   } catch (e) {
     res.status(400).send(e);
@@ -89,3 +88,4 @@ exports.search = async (req, res) => {
     res.status(400).send(e);
   }
 };
+x
